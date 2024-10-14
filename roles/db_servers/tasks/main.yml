@@ -1,0 +1,56 @@
+---
+ - name: Update Repository Index (db_servers)
+   package:
+     update_cache: yes
+   changed_when: false
+
+ - name: install Nagios Prerequisites (Ubuntu)
+   package:
+     name:
+       - autoconf
+       - gcc
+       - libc6
+       - make
+       - wget
+       - unzip
+       - apache2
+       - php
+       - libapache2-mod-php7.2 
+       - libgd-dev
+     state: latest
+   when: ansible_distribution == "Ubuntu"
+
+ - name: install Nagios Prerequisites (CentOS)
+   package:
+     name:
+       - gcc
+       - glibc
+       - glibc-common
+       - wget
+       - unzip
+       - httpd
+       - php
+       - gd
+       - gd-devel
+       - perl
+       - postfix
+       - openssl-devel     
+     state: latest
+   when: ansible_distribution == "CentOS"
+   
+
+ - name: Install Nagios Core (CentOS)
+   unarchive:
+     src: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.14.tar.gz 
+     dest: /usr/local/bin
+     remote_src: yes
+     mode: 0755
+     owner: root
+     group: root
+   when: ansible_distribution == "CentOS"
+
+ - name: Install Nagios Core (Ubuntu)
+   apt:
+     name: nagios3
+     state: latest
+   when: ansible_distribution == "Ubuntu"
