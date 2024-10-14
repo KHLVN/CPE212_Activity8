@@ -7,15 +7,10 @@
  - name: install Nagios Prerequisites (Ubuntu)
    package:
      name:
-       - autoconf
+       - libc6-dev
+       - libpng-dev
+       - libfreetype6-dev
        - gcc
-       - libc6
-       - make
-       - wget
-       - unzip
-       - apache2
-       - php
-       - libapache2-mod-php7.2 
        - libgd-dev
      state: latest
    when: ansible_distribution == "Ubuntu"
@@ -23,30 +18,20 @@
  - name: install Nagios Prerequisites (CentOS)
    package:
      name:
-       - gcc
-       - glibc
-       - glibc-common
-       - wget
-       - unzip
-       - httpd
-       - php
-       - gd
+       - epel-release
+       - libpng-devel
        - gd-devel
-       - perl
-       - postfix
-       - openssl-devel     
+       - gcc
+       - freetype-devel
+       - glibc    
      state: latest
    when: ansible_distribution == "CentOS"
    
 
  - name: Install Nagios Core (CentOS)
-   unarchive:
-     src: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.14.tar.gz 
-     dest: /usr/local/bin
-     remote_src: yes
-     mode: 0755
-     owner: root
-     group: root
+   package:
+     name: nagios
+     state: latest
    when: ansible_distribution == "CentOS"
 
  - name: Install Nagios Core (Ubuntu)
